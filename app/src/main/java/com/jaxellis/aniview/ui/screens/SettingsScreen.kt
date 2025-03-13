@@ -16,9 +16,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -26,10 +28,12 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -43,13 +47,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jaxellis.aniview.BuildConfig
+import com.jaxellis.aniview.ui.theme.ThemeOption
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingsScreen(onBackClick: () -> Unit, onToggleTheme: () -> Unit, isDarkTheme: Boolean) {
+fun SettingsScreen(
+    onBackClick: () -> Unit,
+    currentTheme: ThemeOption,
+    onThemeChanged: (ThemeOption) -> Unit
+) {
     BackHandler {
         onBackClick()
     }
+    
+    // State for theme selection dialog
+    var showThemeDialog by remember { mutableStateOf(false) }
     
     Scaffold(
         topBar = {
@@ -93,14 +105,9 @@ fun SettingsScreen(onBackClick: () -> Unit, onToggleTheme: () -> Unit, isDarkThe
                     ) {
                         SettingItem(
                             icon = Icons.Default.Settings,
-                            title = "Dark Theme",
-                            subtitle = "Toggle between light and dark theme",
-                            endContent = {
-                                Switch(
-                                    checked = isDarkTheme,
-                                    onCheckedChange = { onToggleTheme() }
-                                )
-                            }
+                            title = "Theme",
+                            subtitle = "Select app theme (${currentTheme.displayName})",
+                            onClick = { showThemeDialog = true }
                         )
                     }
                 }
@@ -187,6 +194,68 @@ fun SettingsScreen(onBackClick: () -> Unit, onToggleTheme: () -> Unit, isDarkThe
             }
         }
     }
+    
+    // Theme selection dialog
+    if (showThemeDialog) {
+        ThemeSelectionDialog(
+            currentTheme = currentTheme,
+            onThemeSelected = { 
+                onThemeChanged(it)
+                showThemeDialog = false
+            },
+            onDismiss = { showThemeDialog = false }
+        )
+    }
+}
+
+@Composable
+fun ThemeSelectionDialog(
+    currentTheme: ThemeOption,
+    onThemeSelected: (ThemeOption) -> Unit,
+    onDismiss: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Select Theme") },
+        text = {
+            Column {
+                ThemeOption.values().forEach { theme ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable { onThemeSelected(theme) }
+                            .padding(vertical = 12.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        RadioButton(
+                            selected = theme == currentTheme,
+                            onClick = { onThemeSelected(theme) }
+                        )
+                        
+                        Text(
+                            text = theme.displayName,
+                            style = MaterialTheme.typography.bodyLarge,
+                            modifier = Modifier.padding(start = 8.dp)
+                        )
+                        
+                        if (theme == currentTheme) {
+                            Spacer(modifier = Modifier.weight(1f))
+                            Icon(
+                                imageVector = Icons.Default.Check,
+                                contentDescription = "Selected",
+                                tint = MaterialTheme.colorScheme.primary
+                            )
+                        }
+                    }
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text("Close")
+            }
+        }
+    )
 }
 
 @Composable

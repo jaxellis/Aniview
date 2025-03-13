@@ -11,12 +11,43 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.font.FontWeight
 import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import com.jaxellis.aniview.AniviewApplication
+
+/**
+ * Represents the available theme options in the app.
+ * 
+ * This enum is designed to be extensible for future theme additions.
+ */
+enum class ThemeOption(val displayName: String) {
+    SYSTEM("System Default"),
+    LIGHT("Light"),
+    DARK("Dark"),
+    HIGH_CONTRAST("High Contrast");
+    
+    companion object {
+        /**
+         * Get the current theme option based on app preferences
+         */
+        fun getCurrentTheme(context: android.content.Context): ThemeOption {
+            val isHighContrastEnabled = AniviewApplication.isHighContrastEnabled(context)
+            val isDarkThemeForced = AniviewApplication.isDarkThemeForced(context)
+            val isLightThemeForced = AniviewApplication.isLightThemeForced(context)
+            
+            return when {
+                isHighContrastEnabled -> HIGH_CONTRAST
+                isDarkThemeForced -> DARK
+                isLightThemeForced -> LIGHT
+                else -> SYSTEM
+            }
+        }
+    }
+}
 
 // Regular Dark Color Scheme
 private val DarkColorScheme = darkColorScheme(
@@ -72,20 +103,32 @@ private val HighContrastTypography = Typography.copy(
 
 @Composable
 fun AniviewTheme(
+    themeOption: ThemeOption? = null,
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
     val context = LocalContext.current
-    val isHighContrastEnabled = AniviewApplication.isHighContrastEnabled(context)
+    
+    // Determine if high contrast is enabled
+    val isHighContrastEnabled = themeOption == ThemeOption.HIGH_CONTRAST || 
+        (themeOption == null && AniviewApplication.isHighContrastEnabled(context))
+    
+    // Determine if dark theme should be used
+    val useDarkTheme = when(themeOption) {
+        ThemeOption.DARK -> true
+        ThemeOption.LIGHT -> false
+        ThemeOption.HIGH_CONTRAST -> true // High contrast is based on dark theme
+        ThemeOption.SYSTEM, null -> darkTheme
+    }
     
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+            if (useDarkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
         isHighContrastEnabled -> HighContrastDarkColorScheme
-        darkTheme -> DarkColorScheme
+        useDarkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
 
@@ -100,10 +143,20 @@ fun AniviewTheme(
             // Enable edge-to-edge content
             WindowCompat.setDecorFitsSystemWindows(window, false)
             
-            // Control system bars appearance (light vs dark icons)
-            WindowCompat.getInsetsController(window, view).apply {
-                isAppearanceLightStatusBars = !darkTheme
-                isAppearanceLightNavigationBars = !darkTheme
+            // Get window insets controller to manage system bars appearance
+            val controller = WindowInsetsControllerCompat(window, view)
+            
+            // Configure system bars appearance and behavior
+            controller.apply {
+                // Set the appearance of the status bar icons based on theme
+                isAppearanceLightStatusBars = !useDarkTheme
+                isAppearanceLightNavigationBars = !useDarkTheme
+                
+                // Make system bars visible
+                show(WindowInsetsCompat.Type.systemBars())
+                
+                // Set behavior for system bars
+                systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
             }
         }
     }
