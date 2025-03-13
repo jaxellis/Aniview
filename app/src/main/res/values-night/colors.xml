@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dark theme colors (from .site-theme-dark CSS) -->
+    <color name="background">#FF000000</color>
+    <color name="foreground">#FF0C0C0C</color>
+    <color name="foreground_grey">#FF0C0C0C</color>
+    <color name="foreground_grey_dark">#FFEAECFD</color>
+    <color name="foreground_blue">#FF000000</color>
+    <color name="foreground_blue_dark">#FFF1F3F7</color>
+    <color name="background_blue_dark">#FF1F232D</color>
+    <color name="overlay">#FF1F2631</color>
+    <color name="shadow">#FF313644</color>
+    <color name="shadow_dark">#FF060D22</color>
+    <color name="shadow_blue">#FF6784BB</color>
+    <color name="text">#FFC5C5C5</color>
+    <color name="text_light">#FFC7C7C7</color>
+    <color name="text_lighter">#FFCACACA</color>
+    <color name="text_bright">#FFC5C5C5</color>
+    <color name="blue">#FF00FFFF</color>
+    <color name="blue_dim">#FF00FFFF</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="black">#FF000000</color>
+    <color name="red">#8800C8FF</color>
+    <color name="peach">#FF00FFFF</color>
+
+    <!-- Background and Gray colors at different levels -->
+    <color name="background_100">#FF0C0C0C</color>
+    <color name="background_200">#FF0C0C0C</color>
+    <color name="background_600">#FFC5C5C5</color>
+    <color name="background_700">#FFC5C5C5</color>
+    <color name="background_800">#FFC5C5C5</color>
+    <color name="gray_100">#FF0C0C0C</color>
+    <color name="gray_200">#FF0C0C0C</color>
+    <color name="gray_600">#FFC5C5C5</color>
+    <color name="gray_700">#FFC5C5C5</color>
+    <color name="gray_800">#FFC5C5C5</color>
+</resources> 
