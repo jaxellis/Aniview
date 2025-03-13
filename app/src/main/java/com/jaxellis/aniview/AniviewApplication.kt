@@ -18,23 +18,7 @@ class AniviewApplication : Application() {
             val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
             return prefs.getBoolean(KEY_HIGH_CONTRAST, false)
         }
-        
-        // Function to set high contrast mode
-        fun setHighContrastMode(context: Context, enabled: Boolean) {
-            val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-            prefs.edit { 
-                putBoolean(KEY_HIGH_CONTRAST, enabled)
-                // If enabling high contrast, ensure we're also in dark mode
-                if (enabled) {
-                    putString(KEY_THEME, ThemeOption.HIGH_CONTRAST.name)
-                } else if (getThemeOption(context) == ThemeOption.HIGH_CONTRAST) {
-                    // If disabling high contrast and current theme is high contrast,
-                    // switch to dark mode
-                    putString(KEY_THEME, ThemeOption.DARK.name)
-                }
-            }
-        }
-        
+
         // Function to check if dark theme is forced
         fun isDarkThemeForced(context: Context): Boolean {
             return getThemeOption(context) == ThemeOption.DARK
