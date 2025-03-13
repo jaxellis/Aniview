@@ -1,5 +1,6 @@
 package com.jaxellis.aniview.ui.screens
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -46,6 +47,9 @@ import com.jaxellis.aniview.BuildConfig
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(onBackClick: () -> Unit, onToggleTheme: () -> Unit, isDarkTheme: Boolean) {
+    BackHandler {
+        onBackClick()
+    }
     
     Scaffold(
         topBar = {
