@@ -7,11 +7,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -66,6 +69,7 @@ fun MangaScreen() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .windowInsetsPadding(WindowInsets.statusBars)
                 .padding(top = 16.dp)
         ) {
             Text(
@@ -101,49 +105,42 @@ fun MangaScreen() {
             ) {
                 tabTitles.forEachIndexed { index, title ->
                     Tab(
-                        selected = index == pagerState.currentPage,
+                        selected = pagerState.currentPage == index,
                         onClick = {
                             coroutineScope.launch {
                                 pagerState.animateScrollToPage(index)
                             }
                         },
-                        text = {
-                            Text(
-                                text = title,
-                                fontWeight = if (index == pagerState.currentPage) FontWeight.Bold else FontWeight.Normal
-                            )
-                        }
+                        text = { Text(title) }
                     )
                 }
             }
-            
-            // Content for each tab
+
             HorizontalPager(
                 state = pagerState,
                 modifier = Modifier.weight(1f)
             ) { page ->
-                MangaGrid(page = page)
+                when (page) {
+                    0 -> MangaGrid(generateSampleManga())
+                    else -> MangaGrid(
+                        generateSampleManga().filter { 
+                            when (page) {
+                                1 -> true  // Popular - could add filtering logic
+                                2 -> true  // New - could add filtering logic
+                                3 -> it.status == "Completed"
+                                4 -> it.status == "Ongoing"
+                                else -> true
+                            }
+                        }
+                    )
+                }
             }
         }
     }
 }
 
 @Composable
-fun MangaGrid(page: Int) {
-    // Dummy data for demonstration
-    val mangaList = listOf(
-        MangaItem("One Piece", "Weekly"),
-        MangaItem("Berserk", "Monthly"),
-        MangaItem("Solo Leveling", "Completed"),
-        MangaItem("Chainsaw Man", "Weekly"),
-        MangaItem("Jujutsu Kaisen", "Weekly"),
-        MangaItem("Spy x Family", "Bi-weekly"),
-        MangaItem("My Hero Academia", "Weekly"),
-        MangaItem("Tower of God", "Weekly"),
-        MangaItem("Vagabond", "On Hiatus"),
-        MangaItem("Attack on Titan", "Completed")
-    )
-    
+fun MangaGrid(mangaList: List<MangaItem>) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         contentPadding = PaddingValues(16.dp),
@@ -222,4 +219,20 @@ fun MangaGridItem(manga: MangaItem) {
 data class MangaItem(
     val title: String,
     val status: String
-) 
+)
+
+// Helper function to generate sample manga data
+private fun generateSampleManga(): List<MangaItem> {
+    return listOf(
+        MangaItem("One Piece", "Ongoing"),
+        MangaItem("Berserk", "Ongoing"),
+        MangaItem("Solo Leveling", "Completed"),
+        MangaItem("Chainsaw Man", "Ongoing"),
+        MangaItem("Jujutsu Kaisen", "Ongoing"),
+        MangaItem("Spy x Family", "Ongoing"),
+        MangaItem("My Hero Academia", "Ongoing"),
+        MangaItem("Tower of God", "Ongoing"),
+        MangaItem("Vagabond", "On Hiatus"),
+        MangaItem("Attack on Titan", "Completed")
+    )
+} 
