@@ -1,55 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Base theme colors (from default CSS theme) -->
-    <color name="background">#FFEDF1F5</color>
-    <color name="foreground">#FFFAFAFA</color>
-    <color name="foreground_grey">#FFF5F6F6</color>
-    <color name="foreground_grey_dark">#FFEAECFD</color>
-    <color name="foreground_blue">#FFF6F8FB</color>
-    <color name="foreground_blue_dark">#FFF1F3F7</color>
-    <color name="background_blue_dark">#FF1F232D</color>
-    <color name="overlay">#FF1F2631</color>
-    <color name="shadow">#FF313644</color>
-    <color name="shadow_dark">#FF060D22</color>
-    <color name="shadow_blue">#FF6784BB</color>
-    <color name="text">#FF5C728A</color>
-    <color name="text_light">#FF7A858F</color>
-    <color name="text_lighter">#FF9299A1</color>
-    <color name="text_bright">#FFEDF1F5</color>
+    <!-- Essential colors for XML drawables -->
     <color name="blue">#FF3DB4F2</color>
-    <color name="blue_dim">#FF8DB2DB</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="black">#FF000000</color>
-    <color name="red">#FFE85D75</color>
-    <color name="peach">#FFFA7A7A</color>
-    <color name="orange">#FFF79A63</color>
-    <color name="yellow">#FFF7BF63</color>
-    <color name="green">#FF7BD555</color>
-
-    <!-- Background and Gray colors at different levels -->
-    <color name="background_100">#FFFBFBFB</color>
-    <color name="background_200">#FFEDF1F5</color>
-    <color name="background_300">#FFDDE6EE</color>
-    <color name="background_400">#FFC9D7E3</color>
-    <color name="background_500">#FFADC0D2</color>
-    <color name="background_600">#FF8BA0B2</color>
-    <color name="background_700">#FF748899</color>
-    <color name="background_800">#FF647380</color>
-    <color name="background_900">#FF516170</color>
-    <color name="background_1000">#FF404E5C</color>
-    <color name="background_1100">#FF26343F</color>
-    <color name="background_1200">#FF1B1E1F</color>
-
-    <!-- Legacy color names - keeping for backward compatibility -->
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="gray_100">#FFFBFBFB</color>
-    <color name="gray_200">#FFEDF1F5</color>
-    <color name="gray_600">#FF8BA0B2</color>
-    <color name="gray_700">#FF748899</color>
-    <color name="gray_800">#FF647380</color>
-    <color name="gray_900">#141414</color>
 </resources>

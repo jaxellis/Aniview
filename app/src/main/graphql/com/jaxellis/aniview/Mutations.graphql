@@ -1,0 +1,132 @@
+mutation SaveMediaListEntry(
+	$mediaId: Int
+	$status: MediaListStatus
+	$score: Float
+	$progress: Int
+	$progressVolumes: Int
+	$startedAt: FuzzyDateInput
+	$completedAt: FuzzyDateInput
+	$repeat: Int
+	$private: Boolean
+	$notes: String
+) {
+	SaveMediaListEntry(
+		mediaId: $mediaId
+		status: $status
+		score: $score
+		progress: $progress
+		progressVolumes: $progressVolumes
+		startedAt: $startedAt
+		completedAt: $completedAt
+		repeat: $repeat
+		private: $private
+		notes: $notes
+	) {
+		id
+		status
+		score
+		progress
+		progressVolumes
+		startedAt {
+			year
+			month
+			day
+		}
+		completedAt {
+			year
+			month
+			day
+		}
+		repeat
+		private
+		notes
+	}
+}
+
+mutation DeleteMediaListEntry($id: Int) {
+	DeleteMediaListEntry(id: $id) {
+		deleted
+	}
+}
+
+mutation UpdateUser(
+	$about: String
+	$titleLanguage: UserTitleLanguage
+	$displayAdultContent: Boolean
+) {
+	UpdateUser(
+		about: $about
+		titleLanguage: $titleLanguage
+		displayAdultContent: $displayAdultContent
+	) {
+		id
+		about
+		options {
+			titleLanguage
+			displayAdultContent
+		}
+	}
+}
+
+mutation ToggleFavourite(
+	$animeId: Int
+	$mangaId: Int
+	$characterId: Int
+	$staffId: Int
+	$studioId: Int
+) {
+	ToggleFavourite(
+		animeId: $animeId
+		mangaId: $mangaId
+		characterId: $characterId
+		staffId: $staffId
+		studioId: $studioId
+	) {
+		anime {
+			nodes {
+				id
+				title {
+					romaji
+				}
+			}
+		}
+		manga {
+			nodes {
+				id
+				title {
+					romaji
+				}
+			}
+		}
+		characters {
+			nodes {
+				id
+				name {
+					full
+				}
+			}
+		}
+		staff {
+			nodes {
+				id
+				name {
+					full
+				}
+			}
+		}
+		studios {
+			nodes {
+				id
+				name
+			}
+		}
+	}
+}
+
+mutation RateReview($reviewId: Int, $rating: ReviewRating) {
+	RateReview(reviewId: $reviewId, rating: $rating) {
+		id
+		rating
+		userRating
+	}
+}

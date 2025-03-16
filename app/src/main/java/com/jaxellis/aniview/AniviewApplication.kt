@@ -7,7 +7,6 @@ import androidx.core.content.edit
 import com.jaxellis.aniview.ui.theme.ThemeOption
 
 class AniviewApplication : Application() {
-    // Companion object to hold theme states
     companion object {
         const val PREF_NAME = "aniview_prefs"
         const val KEY_HIGH_CONTRAST = "high_contrast_mode"
@@ -29,6 +28,11 @@ class AniviewApplication : Application() {
             return getThemeOption(context) == ThemeOption.LIGHT
         }
         
+        // Function to check if dynamic theme is enabled
+        fun isDynamicThemeEnabled(context: Context): Boolean {
+            return getThemeOption(context) == ThemeOption.DYNAMIC
+        }
+        
         // Function to get the current theme option
         fun getThemeOption(context: Context): ThemeOption {
             val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
@@ -36,7 +40,6 @@ class AniviewApplication : Application() {
             return try {
                 ThemeOption.valueOf(themeName ?: ThemeOption.SYSTEM.name)
             } catch (e: IllegalArgumentException) {
-                // If the stored theme name is invalid, default to system
                 ThemeOption.SYSTEM
             }
         }
@@ -46,7 +49,6 @@ class AniviewApplication : Application() {
             val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
             prefs.edit {
                 putString(KEY_THEME, themeOption.name)
-                // Update high contrast setting based on theme
                 putBoolean(KEY_HIGH_CONTRAST, themeOption == ThemeOption.HIGH_CONTRAST)
             }
         }
@@ -55,7 +57,6 @@ class AniviewApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         
-        // Set the app to always use dark theme
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
     }
 } 

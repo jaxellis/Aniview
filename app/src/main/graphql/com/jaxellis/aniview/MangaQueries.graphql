@@ -1,0 +1,170 @@
+query GetMangaById($id: Int) {
+	Media(id: $id, type: MANGA) {
+		id
+		title {
+			romaji
+			english
+			native
+		}
+		description
+		coverImage {
+			extraLarge
+			large
+			medium
+		}
+		bannerImage
+		genres
+		format
+		chapters
+		volumes
+		status
+		startDate {
+			year
+			month
+			day
+		}
+		averageScore
+		popularity
+		staff {
+			edges {
+				role
+				node {
+					id
+					name {
+						full
+					}
+				}
+			}
+		}
+		characters(sort: ROLE) {
+			nodes {
+				id
+				name {
+					full
+				}
+				image {
+					large
+					medium
+				}
+				description
+				gender
+				age
+			}
+		}
+		relations {
+			edges {
+				relationType
+				node {
+					id
+					title {
+						romaji
+						english
+					}
+					format
+					type
+					coverImage {
+						medium
+					}
+				}
+			}
+		}
+		recommendations {
+			nodes {
+				mediaRecommendation {
+					id
+					title {
+						romaji
+						english
+					}
+					coverImage {
+						medium
+					}
+				}
+			}
+		}
+	}
+}
+
+query SearchManga($search: String, $page: Int, $perPage: Int) {
+	Page(page: $page, perPage: $perPage) {
+		pageInfo {
+			total
+			currentPage
+			lastPage
+			hasNextPage
+			perPage
+		}
+		media(search: $search, type: MANGA, sort: POPULARITY_DESC) {
+			id
+			title {
+				romaji
+				english
+				native
+			}
+			coverImage {
+				medium
+			}
+			format
+			chapters
+			volumes
+			status
+			startDate {
+				year
+			}
+			averageScore
+			genres
+		}
+	}
+}
+
+query GetTrendingManga($page: Int, $perPage: Int) {
+	Page(page: $page, perPage: $perPage) {
+		pageInfo {
+			total
+			currentPage
+			hasNextPage
+		}
+		media(type: MANGA, sort: TRENDING_DESC) {
+			id
+			title {
+				romaji
+				english
+			}
+			coverImage {
+				medium
+			}
+			chapters
+			volumes
+			status
+			format
+			genres
+			averageScore
+		}
+	}
+}
+
+query GetPopularManga($page: Int, $perPage: Int) {
+	Page(page: $page, perPage: $perPage) {
+		pageInfo {
+			total
+			currentPage
+			hasNextPage
+		}
+		media(type: MANGA, sort: POPULARITY_DESC) {
+			id
+			title {
+				romaji
+				english
+			}
+			coverImage {
+				medium
+			}
+			chapters
+			volumes
+			status
+			format
+			genres
+			averageScore
+		}
+	}
+}

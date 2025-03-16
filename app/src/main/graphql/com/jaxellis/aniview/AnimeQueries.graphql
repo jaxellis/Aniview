@@ -1,0 +1,200 @@
+query GetAnimeById($id: Int) {
+	Media(id: $id, type: ANIME) {
+		id
+		title {
+			romaji
+			english
+			native
+		}
+		description
+		coverImage {
+			extraLarge
+			large
+			medium
+		}
+		bannerImage
+		genres
+		format
+		episodes
+		duration
+		status
+		season
+		seasonYear
+		averageScore
+		popularity
+		studios {
+			nodes {
+				name
+			}
+		}
+		nextAiringEpisode {
+			airingAt
+			episode
+		}
+		characters(sort: ROLE) {
+			nodes {
+				id
+				name {
+					full
+				}
+				image {
+					large
+					medium
+				}
+				description
+				gender
+				age
+			}
+		}
+		relations {
+			edges {
+				relationType
+				node {
+					id
+					title {
+						romaji
+						english
+					}
+					format
+					type
+					coverImage {
+						medium
+					}
+				}
+			}
+		}
+		recommendations {
+			nodes {
+				mediaRecommendation {
+					id
+					title {
+						romaji
+						english
+					}
+					coverImage {
+						medium
+					}
+				}
+			}
+		}
+	}
+}
+
+query SearchAnime($search: String, $page: Int, $perPage: Int) {
+	Page(page: $page, perPage: $perPage) {
+		pageInfo {
+			total
+			currentPage
+			lastPage
+			hasNextPage
+			perPage
+		}
+		media(search: $search, type: ANIME, sort: POPULARITY_DESC) {
+			id
+			title {
+				romaji
+				english
+				native
+			}
+			coverImage {
+				medium
+			}
+			format
+			episodes
+			season
+			seasonYear
+			status
+			averageScore
+			genres
+		}
+	}
+}
+
+query GetSeasonalAnime(
+	$season: MediaSeason
+	$seasonYear: Int
+	$page: Int
+	$perPage: Int
+) {
+	Page(page: $page, perPage: $perPage) {
+		pageInfo {
+			total
+			currentPage
+			hasNextPage
+		}
+		media(
+			season: $season
+			seasonYear: $seasonYear
+			type: ANIME
+			sort: POPULARITY_DESC
+		) {
+			id
+			title {
+				romaji
+				english
+			}
+			coverImage {
+				medium
+			}
+			episodes
+			nextAiringEpisode {
+				airingAt
+				episode
+			}
+			format
+			status
+			genres
+			averageScore
+		}
+	}
+}
+
+query GetTrendingAnime($page: Int, $perPage: Int) {
+	Page(page: $page, perPage: $perPage) {
+		pageInfo {
+			total
+			currentPage
+			hasNextPage
+		}
+		media(type: ANIME, sort: TRENDING_DESC) {
+			id
+			title {
+				romaji
+				english
+			}
+			coverImage {
+				medium
+			}
+			episodes
+			status
+			format
+			genres
+			averageScore
+		}
+	}
+}
+
+query GetPopularAnime($page: Int, $perPage: Int) {
+	Page(page: $page, perPage: $perPage) {
+		pageInfo {
+			total
+			currentPage
+			hasNextPage
+		}
+		media(type: ANIME, sort: POPULARITY_DESC) {
+			id
+			title {
+				romaji
+				english
+			}
+			coverImage {
+				medium
+			}
+			episodes
+			status
+			format
+			genres
+			averageScore
+		}
+	}
+}

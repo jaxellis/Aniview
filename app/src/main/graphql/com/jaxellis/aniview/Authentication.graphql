@@ -1,0 +1,36 @@
+query GetCurrentUser {
+	Viewer {
+		id
+		name
+		avatar {
+			large
+			medium
+		}
+		bannerImage
+		options {
+			titleLanguage
+			displayAdultContent
+		}
+		mediaListOptions {
+			scoreFormat
+			animeList {
+				customLists
+			}
+			mangaList {
+				customLists
+			}
+		}
+		statistics {
+			anime {
+				count
+				episodesWatched
+				minutesWatched
+			}
+			manga {
+				count
+				chaptersRead
+				volumesRead
+			}
+		}
+	}
+}

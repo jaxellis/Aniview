@@ -48,14 +48,12 @@ import kotlinx.coroutines.launch
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Enable edge-to-edge display
         enableEdgeToEdge()
         setContent {
             val context = LocalContext.current
             var currentTheme by rememberSaveable { 
                 mutableStateOf(AniviewApplication.getThemeOption(context)) 
             }
-            
             AniviewTheme(
                 themeOption = currentTheme,
                 darkTheme = isSystemInDarkTheme()

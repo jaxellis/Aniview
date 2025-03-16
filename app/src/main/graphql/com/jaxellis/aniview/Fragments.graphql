@@ -1,0 +1,116 @@
+fragment MediaBasic on Media {
+	id
+	title {
+		romaji
+		english
+		native
+	}
+	coverImage {
+		medium
+		large
+	}
+	format
+	status
+	genres
+	averageScore
+}
+
+fragment AnimeDetails on Media {
+	...MediaBasic
+	description
+	bannerImage
+	episodes
+	duration
+	season
+	seasonYear
+	studios {
+		nodes {
+			id
+			name
+		}
+	}
+	nextAiringEpisode {
+		airingAt
+		episode
+	}
+}
+
+fragment MangaDetails on Media {
+	...MediaBasic
+	description
+	bannerImage
+	chapters
+	volumes
+	staff {
+		edges {
+			role
+			node {
+				id
+				name {
+					full
+				}
+			}
+		}
+	}
+}
+
+fragment CharacterBasic on Character {
+	id
+	name {
+		full
+		native
+	}
+	image {
+		medium
+		large
+	}
+}
+
+fragment CharacterDetails on Character {
+	...CharacterBasic
+	description
+	gender
+	age
+	dateOfBirth {
+		year
+		month
+		day
+	}
+	media {
+		nodes {
+			id
+			title {
+				romaji
+			}
+			type
+			coverImage {
+				medium
+			}
+		}
+	}
+}
+
+fragment MediaListEntry on MediaList {
+	id
+	mediaId
+	status
+	score
+	progress
+	progressVolumes
+	repeat
+	private
+	notes
+	startedAt {
+		year
+		month
+		day
+	}
+	completedAt {
+		year
+		month
+		day
+	}
+	media {
+		...MediaBasic
+	}
+}
